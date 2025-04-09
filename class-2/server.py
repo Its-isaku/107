@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import json
+
 
 app = Flask(__name__)
 
@@ -42,6 +44,56 @@ def contact_api():
     user_name = "Isai Almeraz"
     age = 21
     return  render_template("contact.html", name=user_name , age=age)
+
+products = []
+@app.get("/api/products")
+def get_products():
+    return json.dumps(products)
+
+@app.post("/api/products")
+def post_product():
+    item = request.get_json()
+    print(item)
+    
+    #* mock save
+    products.append(item)
+    return json.dumps(products)
+
+@app.put("/api/products/<int:index>")
+def put_products(index):
+    updated_item = request.get_json()
+    print(updated_item)
+    
+    #* mock update
+    if len(products) > index >= 0:
+        products[index] = updated_item
+        return json.dumps(updated_item)
+    else:
+        return "index deoes not exist", 404
+    
+@app.delete("/api/products/<int:index>")
+def delete_products(index):
+    deleted_item = request.get_json()
+    print(f"delete index: {index}")
+    
+    #* mock delete
+    if len(products) > index >= 0:
+        deleted_item = products.pop(index)
+        return json.dumps(deleted_item)
+    else:
+        return "index deoes not exist", 404
+
+@app.patch("/api/products/<int:index>")
+def patch_products(index):
+    patch_item = request.get_json()
+    print(patch_item)
+    
+    #* mock update
+    if len(products) > index >= 0:
+        products[index].update(patch_item)
+        return json.dumps(patch_item)
+    else:
+        return "index deoes not exist", 404
 
 #? @app.post
 #? @app.put
