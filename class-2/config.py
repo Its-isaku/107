@@ -10,4 +10,4 @@ con_str = "mongodb+srv://test:test123@cluster0.pscxmkd.mongodb.net/?retryWrites=
 client = pymongo.MongoClient(con_str, tlsCAFile=certifi.where())
 
 #? Database name
-db = client.get_database("test")
+db = client.get_database("ChipisFarm")
